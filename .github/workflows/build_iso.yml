@@ -38,7 +38,8 @@ jobs:
           for f in /__w/archcraft-remix/archcraft-remix/iso/out/archcraft-*-x86_64.iso; do
               [ -f "$f" ] && echo "ISO Exists, let's upload!" || ( echo "ISO does not exist, let's call it a fail."; exit 1 )
               iso_link=$( curl -H "Max-Days: 1" --upload-file $f https://transfer.sh/archcraft_remix-${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}-x86_64.iso )
-              echo "##[set-output name=link;]$(echo $iso_link)"
+              # echo "##[set-output name=link;]$(echo $iso_link)"
+              echo "The ISO is uploaded, download it here: $iso_link"
               break
           done
         id: upload_build_iso
