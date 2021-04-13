@@ -58,7 +58,7 @@ Yet another minimal linux distribution, based on <a href="https://www.archlinux.
 - `Network Manager` : Manage network connection
 - `Thunar & PCmanFM` : File managers for each window manager
 - `Geany & Leafpad` : A lightweight IDE & text editor
-- `Yay` : AUR (Arch User Repository) helper
+- `Paru` : AUR (Arch User Repository) helper
 - `Styles scripts` : Various scripts to change style for each WM
 - `Font Changer` : An individual & a global font changer
 - `Wallpaper Generator` : Generates various kinds of wallpapers and applies them
@@ -75,7 +75,7 @@ Yet another minimal linux distribution, based on <a href="https://www.archlinux.
 **2. Build ISO -** If you're already using archlinux & want to build the iso, maybe with your config then...
 
 ***Check list***
-- [ ] **archiso** version : `47.1-1`
+- [ ] **archiso** version : `51-1 (or above, untested.)`
 - [ ] At least 10GB of free space
 - [ ] Arch Linux 64-bit only
 - [ ] Clear pacman cache; ```sudo pacman -Scc```

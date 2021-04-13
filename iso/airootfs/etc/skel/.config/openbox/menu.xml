@@ -9,7 +9,7 @@
 		</item>
 		<item label="Web Browser">
 			<action name="Execute">
-				<command>midori</command>
+				<command>firefox</command>
 			</action>
 		</item>
 		<item label="File Manager">
@@ -86,48 +86,48 @@
 		<menu id="root-menu-8399" label="Quick Links">
 			<item label="DuckDuckGo">
 				<action name="Execute">
-					<execute>midori -a https://start.duckduckgo.com/</execute>
+					<execute>firefox https://start.duckduckgo.com/</execute>
 				</action>
 			</item>
 			<item label="Google">
 				<action name="Execute">
-					<execute>midori -a https://www.google.com</execute>
+					<execute>firefox https://www.google.com</execute>
 				</action>
 			</item>
 			<item label="Facebook">
 				<action name="Execute">
-					<execute>midori -a https://www.facebook.com</execute>
+					<execute>firefox https://www.facebook.com</execute>
 				</action>
 			</item>
 			<item label="Twitter">
 				<action name="Execute">
-					<execute>midori -a https://www.twitter.com</execute>
+					<execute>firefox https://www.twitter.com</execute>
 				</action>
 			</item>
 			<item label="GitHub">
 				<action name="Execute">
-					<execute>midori -a https://www.github.com</execute>
+					<execute>firefox https://www.github.com</execute>
 				</action>
 			</item>
 			<item label="Reddit">
 				<action name="Execute">
-					<execute>midori -a https://www.reddit.com</execute>
+					<execute>firefox https://www.reddit.com</execute>
 				</action>
 			</item>
 			<item label="Gmail">
 				<action name="Execute">
-					<execute>midori -a https://mail.google.com</execute>
+					<execute>firefox https://mail.google.com</execute>
 				</action>
 			</item>
 			<item label="Youtube">
 				<action name="Execute">
-					<execute>midori -a https://www.youtube.com</execute>
+					<execute>firefox https://www.youtube.com</execute>
 				</action>
 			</item>
 			<separator/>
 			<item label="Private">
 				<action name="Execute">
-					<execute>midori -p</execute>
+					<execute>firefox -private-window</execute>
 				</action>
 			</item>
 		</menu>

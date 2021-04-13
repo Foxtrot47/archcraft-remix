@@ -3,18 +3,22 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 set -e -u
+shopt -s extglob
 
 # Warning: customize_airootfs.sh is deprecated! Support for it will be removed in a future archiso version.
 
 sed -i 's/#\(en_US\.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 
-sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist
+# Sudo to allow no password
+sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
+chown -c root:root /etc/sudoers
+chmod -c 0440 /etc/sudoers
 
-## Add liveuser to these groups
-#usermod -G "adm,audio,video,floppy,log,network,rfkill,scanner,storage,optical,power,wheel" liveuser
+# Get the best mirrorlist.
+reflector --verbose --sort score --save /etc/pacman.d/mirrorlist
 
-## Disto Info
+## Distro Info
 cat > "/etc/os-release" <<- EOL
 	NAME="Archcraft"
 	PRETTY_NAME="Archcraft"
@@ -29,16 +33,21 @@ cat > "/etc/issue" <<- EOL
 	Archcraft \r (\l)
 EOL
 
-## Append archcraft repository to pacman.conf
-cat >> "/etc/pacman.conf" <<- EOL
+# Enable multilib repository.
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-[multilib]
-Include = /etc/pacman.d/mirrorlist
+## Append 3rd party repositories to pacman.conf
+cat >> "/etc/pacman.conf" <<- EOL
 
 ## Archcraft Repository
 [archcraft]
 SigLevel = Optional TrustAll
 Server = https://archcraft-os.github.io/archcraft-pkgs/\$arch
+
+## Chaotic-AUR Repository
+[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+
 EOL
 
 ## Hide Unnecessary Apps
@@ -61,3 +70,9 @@ done
 cp /usr/bin/networkmanager_dmenu /usr/local/bin/nmd && sed -i 's/config.ini/nmd.ini/g' /usr/local/bin/nmd
 sed -i -e 's/Inherits=.*/Inherits=Hybrid_Light,Papirus,Moka,Adwaita,hicolor/g' /usr/share/icons/Arc/index.theme
 rm -rf /usr/share/xsessions/openbox-kde.desktop /usr/share/applications/xfce4-about.desktop /usr/share/pixmaps/archlinux.png /usr/share/pixmaps/archlinux.svg
+
+## Enable some services.
+services=(ananicy earlyoom)
+for service in "${services[@]}"; do
+    systemctl enable $service
+done

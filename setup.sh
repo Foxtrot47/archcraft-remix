@@ -59,8 +59,8 @@ prerequisite() {
 		(type -p mkarchiso &> /dev/null) && { echo; echo "${ORANGE}[*] ${GREEN}Dependencies are succesfully installed!"; } || { echo; echo "${BLUE}[!] ${RED}Error Occured, failed to install dependencies."; echo; reset_color; exit 1; }
 	fi
 	{ echo; echo ${ORANGE}"[*] ${BLUE}Modifying /usr/bin/mkarchiso - ${CYAN}"; echo; }
-	sudo cp /usr/bin/mkarchiso{,.bak} && sudo sed -i -e 's/-c -G -M/-i -c -G -M/g' /usr/bin/mkarchiso
-	sudo sed -i -e 's/archiso-x86_64/archcraftiso-x86_64/g' /usr/bin/mkarchiso
+	sudo cp -f /usr/bin/mkarchiso /usr/bin/mkarchcraftiso && sudo sed -i -e 's/-c -G -M/-i -c -G -M/g' /usr/bin/mkarchcraftiso
+	sudo sed -i -e 's/archiso-x86_64/archcraftiso-x86_64/g' /usr/bin/mkarchcraftiso
 	{ echo; echo -e ${ORANGE}"[*] ${GREEN}Succesfully Modified."; echo; }
 }
 
@@ -110,37 +110,12 @@ set_extra () {
 		alias gp='git push origin master'
 	_EOF_
 	{ echo; echo ${ORANGE}"[*] ${GREEN}Done. OMZ added successfully."; echo; }
-
-	## Edex-UI (Optional)
-	{ read -p ${ORANGE}"[*] ${BLUE}Do you want EDEX-UI? (Y/N): ${CYAN}" answer; echo; }
-	if [[ $answer = "Y" ]] || [[ $answer = "y" ]]; then
-		{ echo ${ORANGE}"[*] ${BLUE}Alright, Setting up edex-ui... ${CYAN}"; echo; }
-		cd $DIR/iso/airootfs && mkdir opt && cd opt
-		wget -q https://github.com/GitSquared/edex-ui/releases/download/v2.2.2/eDEX-UI.Linux.x86_64.AppImage
-		if [[ -f $DIR/iso/airootfs/opt/eDEX-UI.Linux.x86_64.AppImage ]]; then
-			chmod 755 eDEX-UI.Linux.x86_64.AppImage
-			cat > $DIR/iso/airootfs/usr/share/applications/eDEX-UI.desktop <<- _EOF_
-				[Desktop Entry]
-				Name=eDEX-UI
-				Comment=eDEX-UI sci-fi interface
-				Exec="/opt/eDEX-UI.Linux.x86_64.AppImage"
-				Terminal=false
-				Type=Application
-				Icon=edex-ui
-				StartupWMClass=eDEX-UI
-				Categories=System;
-			_EOF_
-			{ echo; echo ${ORANGE}"[*] ${GREEN}eDEX-UI Added. "; echo; }
-		else
-			{ echo; echo ${ORANGE}"[*] ${RED}Failed to download eDEX-UI. "; echo; }
-		fi
-	fi
 }
 
 ## Changing ownership to root to avoid false permissions error
 set_mod () {
 	echo ${ORANGE}"[*] ${BLUE}Setting up correct permissions..."
-	sudo chown -R root:root $DIR/iso/
+	sudo sed -i -e 's/--no-preserve=ownership,mode/--no-preserve=ownership/g' /usr/bin/mkarchcraftiso
 	{ echo; echo ${ORANGE}"[*] ${GREEN}Setup Completed, follow the next step to build the ISO."; echo; }
 }
 

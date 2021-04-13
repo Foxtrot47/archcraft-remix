@@ -29,7 +29,7 @@ ctrl + alt + {s,n,t}
 
 # Launch Apps
 super + shift + {f,w,e}
-	{pcmanfm,midori,geany}
+	{pcmanfm,firefox,geany}
 
 ##---------- System ----------##
 

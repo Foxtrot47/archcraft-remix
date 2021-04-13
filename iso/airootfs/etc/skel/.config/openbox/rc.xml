@@ -404,7 +404,7 @@
     </keybind>
     <keybind key="W-w">
       <action name="Execute">
-        <command>midori</command>
+        <command>firefox</command>
       </action>
     </keybind>
     <keybind key="W-n">
