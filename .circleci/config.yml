@@ -1,24 +1,21 @@
 version: 2.1
 jobs:
   build_iso:
-    docker:
-      - image: archlinux:latest
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
-      - checkout
       - run: 
-          name: Install build dependencies
+          name: Build ISO
           command: |
+            sudo docker container run -it archlinux:latest /bin/bash --priviledged
+            git clone https://github.com/Foxtrot47/archcraft-remix.git
+            cd archcraft-remix
             pacman -Syu --noconfirm
             pacman -Sy --needed --noconfirm archiso mkinitcpio-archiso reflector git sudo
             reflector --verbose --sort score --save /etc/pacman.d/mirrorlist
             pacman -Scc --noconfirm
-      - run:
-          name: Get the branch name
-          command: |
+            docker container run -it archlinux:latest /bin/bash
             echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
-      - run:
-          name: Build ISO image
-          command: |
             chmod +x setup.sh
             chmod +x iso/build.sh
             ./setup.sh
@@ -27,9 +24,6 @@ jobs:
             sudo sed -i -e 's/--no-preserve=ownership,mode/--no-preserve=ownership/g' /usr/bin/mkarchcraftiso
             sed -i -e 's/set -e -u/set -e -u -x/g' /usr/bin/mkarchcraftiso
             cd iso && sudo ./build.sh -v
-      - run:
-          name:  Upload ISO image
-          command: |
             for f in /__w/archcraft-remix/archcraft-remix/iso/out/archcraft-*-x86_64.iso; do
                 [ -f "$f" ] && echo "ISO Exists, let's upload!" || ( echo "ISO does not exist, let's call it a fail."; exit 1 )
                 iso_link=$( curl -H "Max-Days: 1" --upload-file $f https://transfer.sh/archcraft_remix-${{ steps.extract_branch.outputs.branch }}-${{ github.sha }}-x86_64.iso )
