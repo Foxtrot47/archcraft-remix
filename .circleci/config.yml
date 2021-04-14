@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run: 
           name: Install build dependencies
-          command:
+          command: |
             pacman -Syu --noconfirm
             pacman -Sy --needed --noconfirm archiso mkinitcpio-archiso reflector git sudo
             reflector --verbose --sort score --save /etc/pacman.d/mirrorlist
