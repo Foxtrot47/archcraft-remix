@@ -7,7 +7,7 @@ jobs:
       - run: 
           name: Build ISO
           command: |
-            sudo docker container run -it archlinux:latest /bin/bash --priviledged
+            sudo docker container run -it --priviledged archlinux:latest /bin/bash
             git clone https://github.com/Foxtrot47/archcraft-remix.git
             cd archcraft-remix
             pacman -Syu --noconfirm
